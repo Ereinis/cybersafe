@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gallery</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI;}
+
+body{
+    background:#0f172a;
+    color:#e2e8f0;
+    transition:0.3s;
+}
+
+body.light{
+    background:#f1f5f9;
+    color:#0f172a;
+}
+
+/* NAVBAR */
+.navbar{
+    display:flex;
+    justify-content:space-between;
+    padding:20px 40px;
+    background:rgba(2,6,23,0.9);
+    backdrop-filter: blur(10px);
+    position:sticky;
+    top:0;
+}
+
+.logo{color:#38bdf8;}
+
+.nav-links{
+    display:flex;
+    gap:20px;
+    list-style:none;
+}
+
+.nav-links a{
+    text-decoration:none;
+    color:inherit;
+}
+
+/* MOBILE */
+.menu-btn{
+    display:none;
+    font-size:24px;
+    cursor:pointer;
+}
+
+@media(max-width:800px){
+    .nav-links{
+        display:none;
+        flex-direction:column;
+        position:absolute;
+        top:60px;
+        right:20px;
+        background:#020617;
+        padding:15px;
+        border-radius:10px;
+    }
+
+    .nav-links.active{
+        display:flex;
+    }
+
+    .menu-btn{
+        display:block;
+    }
+}
+
+/* HEADER */
+.header{
+    text-align:center;
+    padding:60px 20px 20px;
+}
+
+.header h1{
+    color:#38bdf8;
+    font-size:2.5rem;
+}
+
+/* GALLERY */
+.gallery{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:20px;
+    padding:40px;
+}
+
+.item{
+    overflow:hidden;
+    border-radius:12px;
+    cursor:pointer;
+    position:relative;
+}
+
+.item img{
+    width:100%;
+    height:100%;
+    display:block;
+    transition:0.4s;
+}
+
+.item:hover img{
+    transform:scale(1.1);
+}
+
+/* FOOTER */
+footer{
+    text-align:center;
+    padding:20px;
+    background:#020617;
+    margin-top:40px;
+}
+
+/* MODAL */
+.modal{
+    display:none;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.8);
+    justify-content:center;
+    align-items:center;
+}
+
+.modal img{
+    max-width:80%;
+    max-height:80%;
+    border-radius:10px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+    <h2 class="logo">CyberSafe</h2>
+
+    <div class="menu-btn" onclick="toggleMenu()">☰</div>
+
+    <ul class="nav-links" id="menu">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="tips.html">Tips</a></li>
+        <li><a href="dangers.html">Dangers</a></li>
+        <li><a href="interactive.html">Interactive</a></li>
+        <li><a href="parents.html">Parents</a></li>
+        <li><a href="teachers.html">Teachers</a></li>
+        <li><a href="resources.html">Resources</a></li>
+        <li><a href="help.html">Help</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+    </ul>
+</nav>
+
+<!-- HEADER -->
+<section class="header">
+    <h1>🖼️ Student Work Gallery</h1>
+    <p>Cyber hygiene posters & creative projects</p>
+</section>
+
+<!-- GALLERY -->
+<section class="gallery">
+
+    <div class="item" onclick="openImg(this)">
+        <img src="WhatsApp Image 2026-04-15 at 11.17.41 PM.jpeg">
+    </div>
+
+    <div class="item" onclick="openImg(this)">
+        <img src="WhatsApp Image 2026-04-15 at 11.20.53 PM.jpeg">
+    </div>
+
+    <iframe allowfullscreen="" allow="clipboard-write" scrolling="no" class="fp-iframe" style="border: 1px solid lightgray; width: 100%; height: 400px;" src="https://heyzine.com/flip-book/187e13eb44.html"></iframe>
+    <iframe allowfullscreen="" allow="clipboard-write" scrolling="no" class="fp-iframe" style="border: 1px solid lightgray; width: 100%; height: 400px;" src="https://heyzine.com/flip-book/cffcbe00bb.html"></iframe>
+
+</section>
+
+<!-- MODAL -->
+<div class="modal" id="modal" onclick="closeImg()">
+    <img id="modalImg">
+</div>
+
+<!-- FOOTER -->
+<footer>
+    <p>CyberSafe Project © 2026</p>
+</footer>
+
+<script>
+function toggleMenu(){
+    document.getElementById("menu").classList.toggle("active");
+}
+
+function openImg(el){
+    document.getElementById("modal").style.display="flex";
+    document.getElementById("modalImg").src = el.querySelector("img").src;
+}
+
+function closeImg(){
+    document.getElementById("modal").style.display="none";
+}
+</script>
+
+</body>
+</html>

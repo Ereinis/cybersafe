@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interactive Quiz</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI;}
+
+body{
+    background:#0f172a;
+    color:#e2e8f0;
+    transition:0.3s;
+}
+
+body.light{
+    background:#f1f5f9;
+    color:#0f172a;
+}
+
+/* NAVBAR */
+.navbar{
+    display:flex;
+    justify-content:space-between;
+    padding:20px 40px;
+    background:rgba(2,6,23,0.9);
+    backdrop-filter: blur(10px);
+    position:sticky;
+    top:0;
+}
+
+.logo{color:#38bdf8;}
+
+.nav-links{
+    display:flex;
+    gap:20px;
+    list-style:none;
+}
+
+.nav-links a{
+    text-decoration:none;
+    color:inherit;
+}
+
+/* MOBILE */
+.menu-btn{
+    display:none;
+    font-size:24px;
+    cursor:pointer;
+}
+
+@media(max-width:800px){
+    .nav-links{
+        display:none;
+        flex-direction:column;
+        position:absolute;
+        top:60px;
+        right:20px;
+        background:#020617;
+        padding:15px;
+        border-radius:10px;
+    }
+
+    .nav-links.active{
+        display:flex;
+    }
+
+    .menu-btn{
+        display:block;
+    }
+}
+
+/* HEADER */
+.header{
+    text-align:center;
+    padding:60px 20px 20px;
+}
+
+.header h1{
+    color:#38bdf8;
+    font-size:2.5rem;
+}
+
+/* QUIZ BOX */
+.quiz-box{
+    max-width:600px;
+    margin:40px auto;
+    background:rgba(255,255,255,0.05);
+    padding:30px;
+    border-radius:12px;
+    backdrop-filter:blur(10px);
+}
+
+.question{
+    font-size:1.3rem;
+    margin-bottom:20px;
+}
+
+.option{
+    display:block;
+    width:100%;
+    margin:10px 0;
+    padding:12px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    background:#1e293b;
+    color:white;
+    transition:0.2s;
+}
+
+.option:hover{
+    background:#38bdf8;
+    color:#020617;
+}
+
+.correct{background:#22c55e !important;}
+.wrong{background:#ef4444 !important;}
+
+.next{
+    margin-top:20px;
+    padding:10px 20px;
+    background:#38bdf8;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+}
+
+.result{
+    text-align:center;
+    font-size:1.5rem;
+}
+
+/* FOOTER */
+footer{
+    text-align:center;
+    padding:20px;
+    background:#020617;
+    margin-top:40px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+    <h2 class="logo">CyberSafe</h2>
+
+    <div class="menu-btn" onclick="toggleMenu()">☰</div>
+
+    <ul class="nav-links" id="menu">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="tips.html">Tips</a></li>
+        <li><a href="dangers.html">Dangers</a></li>
+        <li><a href="interactive.html">Interactive</a></li>
+        <li><a href="parents.html">Parents</a></li>
+        <li><a href="teachers.html">Teachers</a></li>
+        <li><a href="resources.html">Resources</a></li>
+        <li><a href="help.html">Help</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+    </ul>
+</nav>
+
+<!-- HEADER -->
+<section class="header">
+    <h1>🎮 Cyber Hygiene Quiz</h1>
+    <p>Test your knowledge about online safety</p>
+</section>
+
+<!-- QUIZ -->
+<div class="quiz-box" id="quizBox">
+
+    <div class="question" id="question">Question</div>
+
+    <div id="options"></div>
+
+    <button class="next" onclick="nextQuestion()">Next</button>
+
+</div>
+
+<div class="result" id="result"></div>
+
+<footer>
+    <p>CyberSafe Project © 2026</p>
+</footer>
+
+<script>
+
+const quiz = [
+{
+q:"What is a strong password?",
+a:[
+{text:"123456",correct:false},
+{text:"Your name",correct:false},
+{text:"A!9xP@l2#Z",correct:true},
+{text:"qwerty",correct:false}
+]
+},
+{
+q:"What is phishing?",
+a:[
+{text:"A game",correct:false},
+{text:"Fake messages to steal data",correct:true},
+{text:"A virus update",correct:false},
+{text:"A browser",correct:false}
+]
+},
+{
+q:"What should you do with unknown links?",
+a:[
+{text:"Click them",correct:false},
+{text:"Ignore them",correct:true},
+{text:"Share them",correct:false},
+{text:"Download files",correct:false}
+]
+},
+{
+q:"Why update software?",
+a:[
+{text:"To make it slower",correct:false},
+{text:"To fix security problems",correct:true},
+{text:"For decoration",correct:false},
+{text:"Not needed",correct:false}
+]
+}
+];
+
+let index = 0;
+let score = 0;
+
+function loadQuestion(){
+    let q = quiz[index];
+    document.getElementById("question").innerText = q.q;
+
+    let optionsHTML = "";
+
+    q.a.forEach((opt,i)=>{
+        optionsHTML += `<button class="option" onclick="select(${i})">${opt.text}</button>`;
+    });
+
+    document.getElementById("options").innerHTML = optionsHTML;
+}
+
+function select(i){
+    let buttons = document.querySelectorAll(".option");
+
+    if(quiz[index].a[i].correct){
+        buttons[i].classList.add("correct");
+        score++;
+    } else {
+        buttons[i].classList.add("wrong");
+    }
+
+    buttons.forEach(b=>b.disabled=true);
+}
+
+function nextQuestion(){
+    index++;
+
+    if(index < quiz.length){
+        loadQuestion();
+    } else {
+        document.getElementById("quizBox").style.display="none";
+        document.getElementById("result").innerHTML =
+        `Your Score: ${score}/${quiz.length} 🎯`;
+    }
+}
+
+function toggleMenu(){
+    document.getElementById("menu").classList.toggle("active");
+}
+
+loadQuestion();
+
+</script>
+
+</body>
+</html>
